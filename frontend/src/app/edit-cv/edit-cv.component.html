@@ -1,0 +1,243 @@
+<!-- Button to return to view -->
+<h1>Edit CV</h1>
+<a href="/"><button type="view" class="btn btn-primary return">Return to view</button></a>
+<form [formGroup]="userForm">
+  <div formGroupName="user">
+    <h2>Personal Data</h2>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name" formControlName="name">
+    </div>
+    <div class="form-group">
+      <label for="label">Label</label>
+      <input type="text" class="form-control" id="label" formControlName="label">
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" formControlName="email">
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input type="text" class="form-control" id="phone" formControlName="phone">
+    </div>
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input type="text" class="form-control" id="location" formControlName="location">
+    </div>
+    <div class="form-group">
+      <label for="website">Website</label>
+      <input type="text" class="form-control" id="website" formControlName="website">
+    </div>
+    <div class="form-group">
+      <label for="summary">Summary</label>
+      <textarea class="form-control" id="summary" formControlName="summary"></textarea>
+    </div>
+    <div class="form-group">
+      <button type="button" class="btn btn-primary" (click)="updateUser()">Update User</button>
+    </div>
+  </div>
+  <h2>Skills</h2>
+  <div formArrayName="skills" *ngFor="let skill of skills.controls; let i = index">
+    <div [formGroupName]="i">
+      <div class="form-group" *ngIf="skill">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" formControlName="name">
+      </div>
+    </div>
+    <div class="form-group">
+      <button type="button" class="btn btn-danger" (click)="removeSkill(i)">Remove Skill</button>
+      &nbsp;
+      <button type="button" class="btn btn-primary" (click)="updateSkill(i)">Update Skill</button>
+    </div>
+ </div>
+  <div class="form-group">
+    <button type="button" class="btn btn-primary" (click)="addSkill()">Add Skill</button>
+  </div>
+  <h2>Languages</h2>
+  <div formArrayName="languages" *ngFor="let language of languages.controls; let i = index">
+    <div [formGroupName]="i">
+      <div class="form-group" *ngIf="language">
+        <label for="language">Language</label>
+        <input type="text" class="form-control" id="name" formControlName="name">
+      </div>
+      <div class="form-group" *ngIf="language">
+        <label for="Proficiency">Proficiency</label>
+        <input type="text" class="form-control" id="proficiency" formControlName="proficiency">
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-danger" (click)="removeLanguage(i)">Remove Language</button>
+        &nbsp;
+        <button type="button" class="btn btn-primary" (click)="updateLanguage(i)">Update Language</button>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button type="button" class="btn btn-primary" (click)="addLanguage()">Add Language</button>
+  </div>
+  <h2>Experiences</h2>
+  <div formArrayName="works" *ngFor="let work of works.controls; let i = index">
+    <div [formGroupName]="i">
+      <div class="form-group" *ngIf="work">
+        <label for="company">Company</label>
+        <input type="text" class="form-control" id="company" formControlName="company">
+      </div>
+      <div class="form-group" *ngIf="work">
+        <label for="position">Position</label>
+        <input type="text" class="form-control" id="position" formControlName="position">
+      </div>
+      <div class="form-group" *ngIf="work">
+        <label for="description">Description</label>
+        <textarea class="form-control" id="description" formControlName="description"></textarea>
+      </div>
+      <div class="form-group" *ngIf="work">
+        <label for="location">Location</label>
+        <input type="text" class="form-control" id="location" formControlName="location">
+      </div>
+      <div class="form-group" *ngIf="work">
+        <label for="startDate">Start Date</label>
+        <input type="date" class="form-control" id="startDate" formControlName="startDate">
+      </div>
+      <div class="form-group" *ngIf="!work.get('endDate')?.value; else endDateExists">
+        <label for="endDate">End Date</label>
+        <button type="button" class="btn btn-danger" (click)="setWorkEndDate(i)">I don't work here anymore</button>
+       </div>
+
+       <ng-template #endDateExists>
+        <div class="form-group">
+          <label for="endDate">End Date</label>
+          <input type="date" class="form-control" id="endDate" formControlName="endDate">
+        </div>
+        <button type="button" class="btn btn-danger" (click)="setWorkEndDateToNull(i)">I still work here</button>
+       </ng-template>
+      <div class="form-group">
+        <button type="button" class="btn btn-danger" (click)="removeWork(i)">Remove Work</button>
+        &nbsp;
+        <button type="button" class="btn btn-primary" (click)="updateWork(i)">Update Work</button>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button type="button" class="btn btn-primary" (click)="addWork()">Add Work</button>
+  </div>
+  <h2>Education</h2>
+  <div formArrayName = "educations" *ngFor="let education of educations.controls; let i = index">
+    <div [formGroupName]="i">
+      <div class="form-group" *ngIf="education">
+        <label for="institution">Institution</label>
+        <input type="text" class="form-control" id="institution" formControlName="institution">
+      </div>
+      <div class="form-group" *ngIf="education">
+        <label for="area">Area</label>
+        <input type="text" class="form-control" id="area" formControlName="area">
+      </div>
+      <div class="form-group" *ngIf="education">
+        <label for="studyType">Study Type</label>
+        <input type="text" class="form-control" id="studyType" formControlName="studyType">
+      </div>
+      <div class="form-group" *ngIf="education">
+        <label for="startDate">Start Date</label>
+        <input type="date" class="form-control" id="startDate" formControlName="startDate">
+      </div>
+      <div class="form-group" *ngIf="education">
+        <label for="endDate">End Date</label>
+        <input type="date" class="form-control" id="endDate" formControlName="endDate">
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-danger" (click)="removeEducation(i)">Remove Education</button>
+        &nbsp;
+        <button type="button" class="btn btn-primary" (click)="updateEducation(i)">Update Education</button>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button type="button" class="btn btn-primary" (click)="addEducation()">Add Education</button>
+  </div>
+  <h2>Socials</h2>
+  <div formArrayName="socials" *ngFor="let social of socials.controls; let i = index">
+    <div [formGroupName]="i">
+      <div class="form-group" *ngIf="social">
+        <label for="name">Network</label>
+        <input type="text" class="form-control" id="network" formControlName="name">
+      </div>
+      <div class="form-group" *ngIf="social">
+        <label for="url">Url</label>
+        <input type="text" class="form-control" id="url" formControlName="url">
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-danger" (click)="removeSocial(i)">Remove Social</button>
+        &nbsp;
+        <button type="button" class="btn btn-primary" (click)="updateSocial(i)">Update Social</button>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button type="button" class="btn btn-primary" (click)="addSocial()">Add Social</button>
+  </div>
+  <h2>Certifications</h2>
+  <div formArrayName="certifications" *ngFor="let certification of certifications.controls; let i = index">
+    <div [formGroupName]="i">
+      <div class="form-group" *ngIf="certification">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" formControlName="name">
+      </div>
+      <div class="form-group " *ngIf="certification">
+        <label for="authority">Authority</label>
+        <input type="text" class="form-control" id="authority" formControlName="authority">
+      </div>
+      <div class="form-group " *ngIf="certification">
+        <label for="description">Description</label>
+        <input type="textarea" class="form-control" id="description" formControlName="description">
+      <div class="form-group " *ngIf="certification">
+        <label for="licenseNumber">Number</label>
+        <input type="text" class="form-control" id="licenseNumber" formControlName="licenseNumber">
+      </div>
+      <div class="form-group " *ngIf="certification">
+        <label for="url">Url</label>
+        <input type="text" class="form-control" id="url" formControlName="url">
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-danger" (click)="removeCertification(i)">Remove Certification</button>
+        &nbsp;
+        <button type="button" class="btn btn-primary" (click)="updateCertification(i)">Update Certification</button>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button type="button" class="btn btn-primary" (click)="addCertification()">Add Certification</button>
+  </div>
+  <h2>Projects</h2>
+  <div formArrayName="projects" *ngFor="let project of projects.controls; let i = index">
+    <div [formGroupName]="i">
+      <div class="form-group" *ngIf="project">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" formControlName="name">
+      </div>
+      <div class="form-group" *ngIf="project">
+        <label for="description">Description</label>
+        <textarea class="form-control" id="description" formControlName="description"></textarea>
+      </div>
+      <div class="form-group" *ngIf="project">
+        <label for="url">Url</label>
+        <input type="text" class="form-control" id="url" formControlName="url">
+      </div>
+      <div class="form-group" *ngIf="project">
+        <label for="startDate">Start Date</label>
+        <input type="date" class="form-control" id="startDate" formControlName="startDate">
+      </div>
+      <div class="form-group" *ngIf="project">
+        <label for="endDate">End Date</label>
+        <input type="date" class="form-control" id="endDate" formControlName="endDate">
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-danger" (click)="removeProject(i)">Remove Project</button>
+        &nbsp;
+        <button type="button" class="btn btn-primary" (click)="updateProject(i)">Update Project</button>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button type="button" class="btn btn-primary" (click)="addProject()">Add Project</button>
+  </div>
+  <a href="/"><button type="view" class="btn btn-primary">Return to view</button></a>
+</form>
