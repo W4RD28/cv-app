@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Certification, Language, Skill, Social, User, Work, Project, Education } from '../interfaces';
-import { CreateEducationDto, CreateLanguageDto, CreateProjectDto, CreateSkillDto, CreateSocialDto,
+import { CreateCertificationDto, CreateEducationDto, CreateLanguageDto, CreateProjectDto, CreateSkillDto, CreateSocialDto,
   CreateWorkDto, UpdateCertificationDto, UpdateEducationDto, UpdateLanguageDto, UpdateProjectDto, UpdateSkillDto, UpdateSocialDto, UpdateWorkDto } from '../dtos';
 
 @Injectable({
@@ -29,7 +29,7 @@ export class DataService {
     return this.http.put<User>(this.apiUrl + 'user/1', params);
   }
 
-  createCertifificateData(cert: Certification): Observable<Certification> {
+  createCertifificateData(cert: CreateCertificationDto): Observable<Certification> {
     return this.http.post<Certification>(this.apiUrl + 'certification', cert);
   }
 

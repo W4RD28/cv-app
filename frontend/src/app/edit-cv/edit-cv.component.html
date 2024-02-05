@@ -97,12 +97,12 @@
         <label for="startDate">Start Date</label>
         <input type="date" class="form-control" id="startDate" formControlName="startDate">
       </div>
-      <div class="form-group" *ngIf="!work.get('endDate')?.value; else endDateExists">
+      <div class="form-group" *ngIf="!work.get('endDate')?.value; else workEndDateExists">
         <label for="endDate">End Date</label>
         <button type="button" class="btn btn-danger" (click)="setWorkEndDate(i)">I don't work here anymore</button>
        </div>
 
-       <ng-template #endDateExists>
+       <ng-template #workEndDateExists>
         <div class="form-group">
           <label for="endDate">End Date</label>
           <input type="date" class="form-control" id="endDate" formControlName="endDate">
@@ -138,10 +138,18 @@
         <label for="startDate">Start Date</label>
         <input type="date" class="form-control" id="startDate" formControlName="startDate">
       </div>
-      <div class="form-group" *ngIf="education">
+      <div class="form-group" *ngIf="!education.get('endDate')?.value; else educationEndDateExists">
         <label for="endDate">End Date</label>
-        <input type="date" class="form-control" id="endDate" formControlName="endDate">
-      </div>
+        <button type="button" class="btn btn-danger" (click)="setEducationEndDate(i)">I don't study here anymore</button>
+       </div>
+
+       <ng-template #educationEndDateExists>
+        <div class="form-group">
+          <label for="endDate">End Date</label>
+          <input type="date" class="form-control" id="endDate" formControlName="endDate">
+        </div>
+        <button type="button" class="btn btn-danger" (click)="setEducationEndDateToNull(i)">I still study here</button>
+       </ng-template>
       <div class="form-group">
         <button type="button" class="btn btn-danger" (click)="removeEducation(i)">Remove Education</button>
         &nbsp;
@@ -195,6 +203,22 @@
         <label for="url">Url</label>
         <input type="text" class="form-control" id="url" formControlName="url">
       </div>
+      <div class="form-group " *ngIf="certification">
+        <label for="date">Date</label>
+        <input type="date" class="form-control" id="date" formControlName="date">
+      </div>
+      <div class="form-group" *ngIf="!certification.get('expirationDate')?.value; else certificationExpirationDateExists">
+        <label for="expirationDate">Expiration Date</label>
+        <button type="button" class="btn btn-danger" (click)="setCertificationExpirationDate(i)">This certification has an expiration date</button>
+       </div>
+
+       <ng-template #certificationExpirationDateExists>
+        <div class="form-group">
+          <label for="expirationDate">Expiration Date</label>
+          <input type="date" class="form-control" id="expirationDate" formControlName="expirationDate">
+        </div>
+        <button type="button" class="btn btn-danger" (click)="setCertificationExpirationDateToNull(i)">This certification doesn't have an expiration date</button>
+       </ng-template>
       <div class="form-group">
         <button type="button" class="btn btn-danger" (click)="removeCertification(i)">Remove Certification</button>
         &nbsp;
@@ -221,14 +245,18 @@
         <label for="url">Url</label>
         <input type="text" class="form-control" id="url" formControlName="url">
       </div>
-      <div class="form-group" *ngIf="project">
-        <label for="startDate">Start Date</label>
-        <input type="date" class="form-control" id="startDate" formControlName="startDate">
-      </div>
-      <div class="form-group" *ngIf="project">
+      <div class="form-group" *ngIf="!project.get('endDate')?.value; else projectEndDateExists">
         <label for="endDate">End Date</label>
-        <input type="date" class="form-control" id="endDate" formControlName="endDate">
-      </div>
+        <button type="button" class="btn btn-danger" (click)="setProjectEndDate(i)">I don't do this project anymore</button>
+       </div>
+
+       <ng-template #projectEndDateExists>
+        <div class="form-group">
+          <label for="endDate">End Date</label>
+          <input type="date" class="form-control" id="endDate" formControlName="endDate">
+        </div>
+        <button type="button" class="btn btn-danger" (click)="setProjectEndDateToNull(i)">I still do this project here</button>
+       </ng-template>
       <div class="form-group">
         <button type="button" class="btn btn-danger" (click)="removeProject(i)">Remove Project</button>
         &nbsp;

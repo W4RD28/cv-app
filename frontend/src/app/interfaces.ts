@@ -24,8 +24,8 @@ interface Certification {
   description?: string;
   licenseNumber?: string;
   url?: string;
-  date: string;
-  expirationDate?: string;
+  date: Date;
+  expirationDate?: Date;
 }
 
 interface Education {
@@ -35,8 +35,8 @@ interface Education {
   area: string;
   studyType: string;
   gpa?: number;
-  startDate: string;
-  endDate?: string;
+  startDate: Date;
+  endDate?: Date;
 }
 
 interface Language {
@@ -52,8 +52,8 @@ interface Project {
   name: string;
   description?: string;
   url?: string;
-  startDate: string;
-  endDate?: string;
+  startDate: Date;
+  endDate?: Date;
 }
 
 interface Skill {

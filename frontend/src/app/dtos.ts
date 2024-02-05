@@ -23,8 +23,8 @@ export interface UpdateLanguageDto {
 export interface CreateWorkDto {
   company: string;
   position: string;
-  startDate: Date;
-  endDate?: Date;
+  startDate: string;
+  endDate?: string;
   description: string;
   location: string;
   userId: number;
@@ -33,8 +33,8 @@ export interface CreateWorkDto {
 export interface UpdateWorkDto {
   company: string;
   position: string;
-  startDate: Date;
-  endDate?: Date;
+  startDate: string;
+  endDate?: string;
   description: string;
   location: string;
   id: number;
@@ -56,9 +56,10 @@ export interface CreateCertificationDto {
   name: string;
   authority: string;
   licenseNumber: string;
-  startDate: Date;
-  endDate?: Date;
+  date: string;
+  expirationDate?: string;
   url: string;
+  description: string;
   userId: number;
 }
 
@@ -66,9 +67,10 @@ export interface UpdateCertificationDto {
   name: string;
   authority: string;
   licenseNumber: string;
-  startDate: Date;
-  endDate?: Date;
-  url: string;
+  date: string;
+  expirationDate?: string;
+  url: Date;
+  description: string;
   id: number;
 }
 
@@ -76,8 +78,8 @@ export interface CreateProjectDto {
   name: string;
   description: string;
   url: string;
-  startDate: Date;
-  endDate?: Date;
+  startDate: string;
+  endDate?: string;
   userId: number;
 }
 
@@ -85,8 +87,8 @@ export interface UpdateProjectDto {
   name: string;
   description: string;
   url: string;
-  startDate: Date;
-  endDate?: Date;
+  startDate: string;
+  endDate?: string;
   id: number;
 }
 
@@ -94,9 +96,9 @@ export interface CreateEducationDto {
   institution: string;
   area: string;
   studyType: string;
-  gpa: number;
-  startDate: Date;
-  endDate?: Date;
+  gpa?: number;
+  startDate: string;
+  endDate?: string;
   userId: number;
 }
 
@@ -105,7 +107,7 @@ export interface UpdateEducationDto {
   area: string;
   studyType: string;
   gpa: number;
-  startDate: Date;
-  endDate?: Date;
+  startDate: string;
+  endDate?: string;
   id: number;
 }

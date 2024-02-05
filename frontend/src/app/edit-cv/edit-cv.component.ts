@@ -121,11 +121,10 @@ export class EditCvComponent implements OnInit {
   }
 
   addLanguage() {
-    this.languages.push(this.fb.group({ language: '', fluency: '',
-    userId: 1 }));
+    let languageData: any;
     this.data_service.createLanguageData({ name: '', userId: 1, proficiency: '' }).subscribe({
       next: (data: any) => {
-        console.log(data);
+        languageData = data;
       },
       error: (error: any) => {
         console.error('There was an error!', error);
@@ -134,16 +133,15 @@ export class EditCvComponent implements OnInit {
         console.log('Completed');
       }
     });
+    this.languages.push(this.fb.group(languageData));
     this.reloadComponent(true);
   }
 
   addWork() {
-    this.works.push(this.fb.group({ company: '', position: '', location: '',
-      startDate: new Date, endDate: new Date, description: '', userId: 1 }));
-    this.data_service.createWorkData({ company: '', position: '', location: '',
-      startDate: new Date, endDate: new Date, description: '', userId: 1 }).subscribe({
+    this.data_service.createWorkData({ company: '', position: '', startDate: new Date().toString(),
+    endDate: new Date().toString(), description: '', location: '', userId: 1 }).subscribe({
       next: (data: any) => {
-        console.log(data);
+        var data = data;
       },
       error: (error: any) => {
         console.error('There was an error!', error);
@@ -152,27 +150,81 @@ export class EditCvComponent implements OnInit {
         console.log('Completed');
       }
     });
+    this.works.push(this.fb.group({ company: '', position: '', startDate: new Date().toString(),
+    endDate: new Date().toString(), description: '', location: '', userId: 1 }));
     this.reloadComponent(true);
   }
 
   addEducation() {
     this.educations.push(this.fb.group({ institution: '', area: '',
-    studyType: '', startDate: Date.now(), endDate: Date.now(), userId: 1 }));
+    studyType: '', startDate: new Date().toString(), endDate: new Date().toString(), userId: 1 }));
+    this.data_service.createEducationData({ institution: '', area: '',
+    studyType: '', startDate: new Date().toString(), endDate: new Date().toString(), userId: 1 }).subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.error('There was an error!', error);
+      },
+      complete: () => {
+        console.log('Completed');
+      }
+    });
+    this.reloadComponent(true);
   }
 
   addSocial() {
     this.socials.push(this.fb.group({ name: '', url: '', userId: 1 }));
+    this.data_service.createSocialData({ name: '', url: '', userId: 1 }).subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.error('There was an error!', error);
+      },
+      complete: () => {
+        console.log('Completed');
+      }
+    });
+    this.reloadComponent(true);
   }
 
   addCertification() {
     this.certifications.push(this.fb.group({ name: '', authority: '',
-    description: '', licenseNumber: '', url: '', date: Date.now(),
-    expirationDate: Date.now(), userId: 1 }));
+    description: '', licenseNumber: '', url: '', date: '',
+    userId: 1 }));
+    this.data_service.createCertifificateData({ name: '', authority: '',
+    description: '', licenseNumber: '', url: '', date: new Date().toString(),
+    userId: 1 }).subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.error('There was an error!', error);
+      },
+      complete: () => {
+        console.log('Completed');
+      }
+    });
+    this.reloadComponent(true);
   }
 
   addProject() {
-    this.projects.push(this.fb.group({ name: '', description: '',
-    url: '', startDate: Date.now(), endDate: Date.now(), userId: 1 }));
+    this.projects.push(this.fb.group({ name: '', description: '', url: '',
+    startDate: new Date().toString(), endDate: new Date().toString(), userId: 1 }));
+    this.data_service.createProjectData({ name: '', description: '', url: '',
+    startDate: new Date().toString(), endDate: new Date().toString(), userId: 1 }).subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.error('There was an error!', error);
+      },
+      complete: () => {
+        console.log('Completed');
+      }
+    });
+    this.reloadComponent(true);
   }
 
   updateUser() {
@@ -259,9 +311,34 @@ export class EditCvComponent implements OnInit {
         console.log('Completed');
       }
     });
+    this.works.at(index).patchValue({ company: workDto.company, position: workDto.position,
+      location: workDto.location, startDate: workDto.startDate, endDate: workDto.endDate,
+      description: workDto.description });
+    alert('Work updated');
   }
 
   setWorkEndDate(index: number) {
+    const work = this.works.at(index);
+    const workDto: UpdateWorkDto = {
+      company: work.value.company,
+      position: work.value.position,
+      location: work.value.location,
+      startDate: work.value.startDate,
+      endDate: new Date().toString(),
+      description: work.value.description,
+      id: work.value.id,
+    };
+    this.data_service.updateWorkData(workDto).subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.error('There was an error!', error);
+      },
+      complete: () => {
+        console.log('Completed');
+      }
+    });
     this.works.at(index).patchValue({ endDate: Date.now() });
   }
 
@@ -270,19 +347,131 @@ export class EditCvComponent implements OnInit {
   }
 
   updateEducation(index: number) {
-    this.educations.at(index).patchValue({ name: 'Updated' });
+    const education = this.educations.at(index);
+    const educationDto = {
+      institution: education.value.institution,
+      area: education.value.area,
+      studyType: education.value.studyType,
+      startDate: education.value.startDate,
+      endDate: education.value.endDate,
+      gpa: education.value.gpa,
+      id: education.value.id,
+    };
+    this.data_service.updateEducationData(educationDto).subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.error('There was an error!', error);
+      },
+      complete: () => {
+        console.log('Completed');
+      }
+    });
+    this.educations.at(index).patchValue({ institution: educationDto.institution, area: educationDto.area,
+      studyType: educationDto.studyType, startDate: educationDto.startDate, endDate: educationDto.endDate });
+    alert('Education updated');
+  }
+
+  setEducationEndDate(index: number) {
+    this.educations.at(index).patchValue({ endDate: Date.now() });
+  }
+
+  setEducationEndDateToNull(index: number) {
+    this.educations.at(index).patchValue({ endDate: null });
   }
 
   updateSocial(index: number) {
-    this.socials.at(index).patchValue({ name: 'Updated' });
+    const social = this.socials.at(index);
+    const socialDto = {
+      name: social.value.name,
+      id: social.value.id,
+      url: social.value.url,
+    };
+    this.data_service.updateSocialData(socialDto).subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.error('There was an error!', error);
+      },
+      complete: () => {
+        console.log('Completed');
+      }
+    });
+    this.socials.at(index).patchValue({ name: socialDto.name, url: socialDto.url });
+    alert('Social updated');
   }
 
   updateCertification(index: number) {
-    this.certifications.at(index).patchValue({ name: 'Updated' });
+    const data = this.certifications.at(index).value;
+    const certDto = {
+      name: data.name,
+      authority: data.authority,
+      licenseNumber: data.licenseNumber,
+      date: data.date,
+      expirationDate: data.expirationDate,
+      url: data.url,
+      description: data.description,
+      id: data.id,
+    };
+    this.data_service.updateCertificationData(certDto).subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.error('There was an error!', error);
+      },
+      complete: () => {
+        console.log('Completed');
+      }
+    });
+    this.certifications.at(index).patchValue({ name: certDto.name, authority: certDto.authority,
+      licenseNumber: certDto.licenseNumber, date: certDto.date, expirationDate: certDto.expirationDate,
+      url: certDto.url, description: certDto.description });
+    alert('Certification updated');
+  }
+
+  setCertificationExpirationDate(index: number) {
+    this.certifications.at(index).patchValue({ endDate: Date.now() });
+  }
+
+  setCertificationExpirationDateToNull(index: number) {
+    this.certifications.at(index).patchValue({ endDate: null });
   }
 
   updateProject(index: number) {
-    this.projects.at(index).patchValue({ name: 'Updated' });
+    const data = this.projects.at(index).value;
+    const projectDto = {
+      name: data.name,
+      description: data.description,
+      url: data.url,
+      startDate: data.startDate,
+      endDate: data.endDate,
+      id: data.id,
+    };
+    this.data_service.updateProjectData(projectDto).subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.error('There was an error!', error);
+      },
+      complete: () => {
+        console.log('Completed');
+      }
+    });
+    this.projects.at(index).patchValue({ name: projectDto.name, description: projectDto.description,
+      url: projectDto.url, startDate: projectDto.startDate, endDate: projectDto.endDate });
+    alert('Project updated');
+  }
+
+  setProjectEndDate(index: number) {
+    this.projects.at(index).patchValue({ endDate: Date.now() });
+  }
+
+  setProjectEndDateToNull(index: number) {
+    this.projects.at(index).patchValue({ endDate: null });
   }
 
   removeSkill(index: number) {
@@ -337,18 +526,70 @@ export class EditCvComponent implements OnInit {
   }
 
   removeEducation(index: number) {
+    const id = this.educations.at(index).value.id;
+    this.data_service.deleteEducationData(id).subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.error('There was an error!', error);
+      },
+      complete: () => {
+        console.log('Completed');
+      }
+    });
     this.educations.removeAt(index);
+    alert('Education removed');
   }
 
   removeSocial(index: number) {
+    const id = this.socials.at(index).value.id;
+    this.data_service.deleteSocialData(id).subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.error('There was an error!', error);
+      },
+      complete: () => {
+        console.log('Completed');
+      }
+    });
     this.socials.removeAt(index);
+    alert('Social removed');
   }
 
   removeCertification(index: number) {
+    const id = this.certifications.at(index).value.id;
+    this.data_service.deleteCertificationData(id).subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.error('There was an error!', error);
+      },
+      complete: () => {
+        console.log('Completed');
+      }
+    });
     this.certifications.removeAt(index);
+    alert('Certification removed');
   }
 
   removeProject(index: number) {
+    const id = this.projects.at(index).value.id;
+    this.data_service.deleteProjectData(id).subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.error('There was an error!', error);
+      },
+      complete: () => {
+        console.log('Completed');
+      }
+    });
     this.projects.removeAt(index);
+    alert('Project removed');
   }
 }
